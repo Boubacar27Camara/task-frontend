@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { deleteCategory, Category } from "../../services/categoryService";
+import { deleteCategory } from "../../services/categoryService";
+import type { Category } from "../../types/category";
 import CategoryForm from "./CategoryForm";
 
 interface CategoryListProps {
@@ -26,13 +27,13 @@ function CategoryList({
   };
 
   const handleDelete = async (categoryId: number) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette catégorie?")) {
       try {
         await deleteCategory(categoryId);
         onDelete?.(categoryId);
-        toast.success("Category deleted successfully");
+        toast.success("Catégorie supprimée avec succès");
       } catch {
-        toast.error("Failed to delete category");
+        toast.error("Échec de la suppression de la catégorie");
       }
     }
   };
@@ -46,7 +47,7 @@ function CategoryList({
   if (!categories || categories.length === 0) {
     return (
       <div className="empty-state">
-        <p>No categories found</p>
+        <p>Aucune catégorie trouvée</p>
       </div>
     );
   }
@@ -78,13 +79,13 @@ function CategoryList({
               onClick={() => handleEdit(category)}
               className="btn-secondary"
             >
-              Edit
+              Modifier
             </button>
             <button
               onClick={() => handleDelete(category.id)}
               className="btn-delete"
             >
-              Delete
+              Supprimer
             </button>
           </div>
         </div>

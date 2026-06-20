@@ -15,13 +15,15 @@ interface DashboardStats {
   completionRate: number;
   overdueTasksCount: number;
   tasksByStatus: Record<string, number>;
-  tasksByPriority: Record<string, number>;
-  tasksByCategory: Record<string, number>;
+  tasksByPriority: Record<string, number> | null;
+  tasksByCategory: Record<string, number> | null;
 }
 
 function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+
+  
 
   const loadDashboard = async () => {
     try {
@@ -55,26 +57,27 @@ function DashboardPage() {
     );
   }
 
-  const statusData = Object.entries(stats.tasksByStatus).map(
-    ([key, value]) => ({
-      name: key,
-      value,
-    })
-  );
+const statusData = Object.entries(stats.tasksByStatus || {}).map(
+  ([key, value]) => ({
+    name: key,
+    value,
+  })
+);
 
-  const priorityData = Object.entries(stats.tasksByPriority).map(
-    ([key, value]) => ({
-      name: key,
-      value,
-    })
-  );
+const priorityData = Object.entries(stats.tasksByPriority || {}).map(
+  ([key, value]) => ({
+    name: key,
+    value,
+  })
+);
 
-  const categoryData = Object.entries(stats.tasksByCategory).map(
-    ([key, value]) => ({
-      name: key,
-      value,
-    })
-  );
+const categoryData = Object.entries(stats.tasksByCategory || {}).map(
+  ([key, value]) => ({
+    name: key,
+    value,
+  })
+);
+
 
   return (
     <div className="container">
@@ -103,6 +106,7 @@ function DashboardPage() {
       <ToastContainer />
     </div>
   );
+  
 }
 
 export default DashboardPage;
